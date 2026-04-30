@@ -96,3 +96,85 @@ Người khiếm thị lướt web bằng phần mềm đọc màn hình (Screen
 
 3. Khi nào thì dùng thẻ <div>?
 Thẻ <div> sinh ra là một thẻ vô nghĩa (non-semantic tag), nên trường hợp thực tế dùng nó hợp lý nhất là khi ta cần một "cái bọc" để gom nhóm các phần tử lại với mục đích dàn layout bằng CSS (như dùng Flexbox, Grid để chia cột) mà khối đó không mang bất kỳ ý nghĩa nào về mặt nội dung.
+
+## PHẦN A — KIỂM TRA ĐỌC HIỂU
+
+### Câu A1 — HTTP & Browser
+* **Nguồn tham chiếu:**
+  - Lời giải 1: File `tuan_1_html5/01_introduction_html_universe.md` — Mục "1.2. HTTP — Ngôn ngữ để Client và Server hiểu nhau" và "1.3. Browser Rendering — Từ Code thành Hình ảnh".
+  - Lời giải 2: File `tuan_1_html5/01_introduction_html_universe.md` — Mục "4.3. Developer Tools (F12) — Kính hiển vi cho website".
+
+**1. 5 bước xảy ra theo thứ tự khi truy cập https://shopee.vn:**
+1. **DNS Lookup:** Trình duyệt tìm IP máy chủ của Shopee dựa trên tên miền.
+2. **TCP Handshake:** Thiết lập kết nối với máy chủ của Shopee thông qua giao thức TCP.
+3. **TLS Negotiation:** Xác thực chứng chỉ bảo mật SSL/TLS để mã hóa dữ liệu.
+4. **HTTP Request & Response:** Trình duyệt gửi yêu cầu (Request) HTTP, máy chủ xử lý và trả về file HTML (mã 200 OK).
+5. **Browser Rendering:** Trình duyệt Parse HTML, Parse CSS, Execute JS và vẽ giao diện lên màn hình.
+
+**2. Phân tích DevTools (Tab Network):**
+* Tab Network cho biết thông tin về mọi luồng giao tiếp giữa trình duyệt và máy chủ: các file được tải xuống, mã trạng thái (Status Code), dung lượng, và tổng thời gian tải trang.
+* *(Hình ảnh minh họa đánh dấu Status 200, thời gian load và file CSS xem tại: `screenshots/a1_network.jpg`)*
+
+### Câu A2 — Semantic HTML
+* **Nguồn tham chiếu:** File `tuan_1_html5/04_semantic_html.md` — Mục "Semantic HTML là gì?" và "Các thẻ Semantic HTML5 cơ bản".
+
+**Tại sao trang web bị đánh giá SEO thấp?** Trang web đang lạm dụng thẻ `<div>` vô nghĩa. Google Bot khi quét qua sẽ không nhận diện được đâu là thanh điều hướng, đâu là nội dung sản phẩm hay chân trang, làm giảm thứ hạng tìm kiếm.
+
+**4 lỗi Semantic và cách sửa:**
+1. `<div class="header">` ➡️ Sửa thành thẻ `<header>`
+2. `<div class="menu">` ➡️ Sửa thành thẻ `<nav>`
+3. `<div class="main">` ➡️ Sửa thành thẻ `<main>`
+4. `<div class="product">` ➡️ Sửa thành thẻ `<article>`
+
+**Đoạn code đã được sửa lại:**
+```html
+<header>
+    <div class="logo">ShopTLU</div>
+    <nav>
+        <div><a href="/">Trang chủ</a></div>
+        <div><a href="/products">Sản phẩm</a></div>
+    </nav>
+</header>
+<main>
+    <article>
+        <h2 class="title">iPhone 16 Pro</h2>
+        <div class="price">25.990.000đ</div>
+        <figure><img src="iphone.jpg" alt="iPhone 16 Pro"></figure>
+    </article>
+</main>
+<footer>© 2026 ShopTLU</footer>
+
+Câu A3 — Block vs Inline
+Nguồn tham chiếu: Kiến thức nền tảng HTML (Phân biệt thuộc tính Block-level và Inline-level).
+
+Mô phỏng kết quả hiển thị:
+
+Plaintext
+Hộp 1
+Text A Text B
+Hộp 2
+Text C Text D
+Hộp 3
+Giải thích:
+
+Thẻ <div> là thẻ Block-level: Nó bắt đầu ở dòng mới và chiếm toàn bộ chiều ngang có thể, đẩy các phần tử khác xuống dòng tiếp theo.
+Thẻ <span> và <strong> là thẻ Inline: Chúng chỉ chiếm phần không gian vừa đủ bao bọc chữ, nên sẽ nằm cạnh nhau trên cùng một dòng.
+
+Câu A4 — Table
+Nguồn tham chiếu: File tuan_1_html5/05_tables_hyperlinks.md — Mục "Cấu trúc cơ bản của Table" và "Lưu ý khi sử dụng Table".
+
+Sự khác nhau:
+
+<thead>: Định nghĩa nhóm hàng tiêu đề của bảng.
+
+<tbody>: Chứa các hàng dữ liệu chính.
+
+<tfoot>: Nằm dưới cùng, dùng để chốt lại/tổng kết dữ liệu của bảng.
+
+3 lý do KHÔNG NÊN dùng table để tạo layout trang web:
+
+Khó Responsive: Cấu trúc bảng rất cứng nhắc, không tự động co giãn dòng cột linh hoạt khi hiển thị trên màn hình điện thoại nhỏ.
+
+Sai ngữ nghĩa (Accessibility): Các phần mềm đọc màn hình (Screen Reader) của người khiếm thị sẽ bị nhầm lẫn khi đọc một bảng dữ liệu lồng ghép rắc rối chỉ để chia bố cục.
+
+Mã nguồn cồng kềnh: Phải lồng ghép rất nhiều thẻ <tr>, <td> phức tạp, làm file nặng và khó sửa lỗi hơn so với việc dùng CSS hiện đại (Flexbox/Grid).
